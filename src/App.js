@@ -7,7 +7,7 @@ import CardListing from './CardListing';
 
 
 class App extends React.Component{
-    state = { thumbNailCard : [], launchYear:''};
+    state = { thumbNailCard : [], launchYear:'all'};
 
     componentDidMount(){
       this.getAllDAta();
@@ -17,18 +17,22 @@ class App extends React.Component{
       //     this.setState({ thumbNailCard: data })
       //   })
     }
+    
 
     getAllDAta(){
-      const url = `https://api.spacexdata.com/v3/launches?limit=100`;
+      console.log('current state'+this.state.launchYear);
+      const url = `https://api.spacexdata.com/v3/launches?limit=100&amp;launch_success=true&amp;land_success=true&amp;launch_year=2014`;
       axios.get(url).then(response => response.data)
       .then((data) => {
         this.setState({ thumbNailCard: data })
       })
     }
 
-    selectYear=(event)=>{
+    selectYear=(event)=>{      
       const yearsLaunch = event.target.value;
       console.log(yearsLaunch);
+      this.setState({launchYear:yearsLaunch})
+      this.getAllDAta();
     }
 
 
@@ -59,6 +63,13 @@ class App extends React.Component{
       
 
     render(){
+      const users = [
+        { id: 1, name: 'Leanne Graham' },
+        { id: 2, name: 'Ervin Howell' },
+        { id: 3, name: 'Clementine Bauch' },
+        { id: 4, name: 'Patricia Lebsack' }
+      ];
+
       return (
         <div className="App">
           <div className="container-fluid">
@@ -146,6 +157,7 @@ class App extends React.Component{
                     </div>
                 </div>
               </div>
+
               <div className="col-12 col-sm-12 col-md-10">
                 <CardListing cards={this.state.thumbNailCard} />
               </div>
